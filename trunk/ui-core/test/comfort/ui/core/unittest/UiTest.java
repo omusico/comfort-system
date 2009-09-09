@@ -608,6 +608,7 @@ public class UiTest {
 
         TestController.History h = goThroughPages();
 
+        
         assertEquals("Ошибка в show: неправильные вызовы контроллера", h, c.history);
 
     }

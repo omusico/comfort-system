@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * @author Michael Morozov
- */
 public class DBTest {
     private static DAO dao = new PureHibernateDAO(DBTest.class.getResource("hibernate.cfg.xml"));
 
