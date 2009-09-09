@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:r="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j" xmlns:ui="http://java.sun.com/jsf/facelets">
+<head>
+    <title>Моделирование</title>
+    <style type="text/css">
+        .delete_class {
+            background-image: url("img/webpro-full-preview.jpg");
+            background-position: -455px -2171px;
+            height: 32px;
+            width: 32px;
+        }
+
+        .add_class {
+            background-image: url("img/webpro-full-preview.jpg");
+            background-position: -524px -2171px;
+            height: 32px;
+            width: 32px;
+        }
+
+        #header {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h:panelGroup id="header" layout="block">
+    <h:panelGroup layout="block">
+    </h:panelGroup>
+    <h:panelGroup style="float:right;" layout="block">
+        <h:graphicImage url="/img/header_right.gif"/>
+    </h:panelGroup>
+</h:panelGroup>
+
+<h:panelGroup style="clear: both; width:0; height:1px; margin:0; border:0" layout="block">
+</h:panelGroup>
+
+<f:view>
+    <r:panel id="content" style="height:100%; overflow:hidden;">
+        <r:panel header="Классы" style="width:49%; float:left">
+            <a4j:form>
+                <h:inputText id="search" value="#{searchText}"/>
+                <a4j:commandButton action="#{classEditor.search(r:findComponent('search').value)}"
+                                   value="Поиск"
+                                   reRender="tabs, planeList"/>
+                <ui:remove>
+                <h:inputText id="search" value="#{txt}"/>
+                <a4j:commandButton action="#{koko.doIt}" value="Поиск"/> 
+                </ui:remove>
+            </a4j:form>
+            <a4j:form>
+                <r:tabPanel id="tabs" style="width:80%;" switchType="client" selectedTab="#{presentationTabName}">
+                    <r:tab label="Дерево" id="treeTab">
+                        <r:tree id="classTree" switchType="ajax"
+                                nodeSelectListener="#{classEditor.selectClass}"
+                                ajaxSubmitSelection="true"
+                                reRender="properties">
+                            <r:recursiveTreeNodesAdaptor
+                                    var="c"
+                                    roots="#{classEditor.rootClasses}"
+                                    nodes="#{c.children}">
+                                <r:treeNode ajaxSingle="true" >
+                                    <r:inplaceInput id="#{c.id}_input" value="#{c.name}" editEvent="ondblclick">
+                                        <a4j:support action="#{classEditor.endChange(c)}" event="onchange"/>
+                                    </r:inplaceInput>
+                                </r:treeNode>
+                            </r:recursiveTreeNodesAdaptor>
+                        </r:tree>
+
+                    </r:tab>
+                    <r:tab label="Список" id="planeListTab">
+                        <h:form>
+                            <r:dataTable id="planeList" var="c" value="#{classEditor.planeList}" rows="0">
+                                <f:facet name="header">
+                                    <r:columnGroup>
+                                        <r:column>
+                                            <h:outputText value="Id"/>
+                                        </r:column>
+                                        <r:column>
+                                            <h:outputText value="Имя класса"/>
+                                        </r:column>
+                                        <r:column>
+                                            <h:outputText value="Описание"/>
+                                        </r:column>
+                                    </r:columnGroup>
+                                </f:facet>
+                                <r:column>
+                                    <h:outputText value="#{c.id}"/>
+                                </r:column>
+                                <r:column>
+                                    <h:outputText value="#{c.name}"/>
+                                </r:column>
+                                <r:column>
+
+                                </r:column>
+                            </r:dataTable>
+                        </h:form>
+                    </r:tab>
+                </r:tabPanel>
+            </a4j:form>
+
+        </r:panel>
+        <r:panel id="properties" header="Свойства: #{selectedClass.name}" style="width:50%; float:right;">
+            <r:dataTable id="propList" var="p" value="#{selectedClass.properties}" rows="0">
+                <f:facet name="header">
+                    <r:columnGroup>
+                        <r:column>
+                            <h:outputText value="Id"/>
+                        </r:column>
+                        <r:column>
+                            <h:outputText value="Имя"/>
+                        </r:column>
+                        <r:column>
+                            <h:outputText value="Тип"/>
+                        </r:column>
+                    </r:columnGroup>
+                </f:facet>
+                <r:column>
+                    <h:outputText value="#{p.id}"/>
+                </r:column>
+                <r:column>
+                    <h:outputText value="#{p.name}"/>
+                </r:column>
+                <r:column>
+                    <h:outputText value="#{p.type.name}"/>
+                </r:column>
+            </r:dataTable>
+
+        </r:panel>
+    </r:panel>
+    <!--<r:panel id="footer">-->
+    <!---->
+    <!--</r:panel>-->
+
+
+</f:view>
+</body>
+</html>

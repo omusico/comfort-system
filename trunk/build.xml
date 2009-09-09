@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="comfort" default=" ">
+    <property file="build.properties"/>
+
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <target name="compile-tools">
+
+        <delete file="${lib.dir}/juniversalchardet.jar"/>
+        <delete file="${lib.dir}/comfort-tools.jar"/>
+        <delete dir="${destination.dir}/juniversalchardet"/>
+        <delete dir="${destination.dir}/comfort-tools"/>
+        <mkdir dir="${destination.dir}/juniversalchardet"/>
+        <mkdir dir="${destination.dir}/comfort-tools"/>
+
+        <javac destdir="${destination.dir}/juniversalchardet"
+               srcdir="${source.dir}/juniversalchardet"
+               excludes="${ignored.files}"
+               includes="${includes.files}"
+               classpathref="compile.classpath"/>
+        <jar jarfile="${lib.dir}/juniversalchardet.jar"
+             basedir="${destination.dir}/juniversalchardet"/>
+
+        <javac destdir="${destination.dir}/comfort-tools"
+               srcdir="${source.dir}/comfort-tools"
+               excludes="${ignored.files}"
+               includes="${includes.files}"
+               classpathref="compile.classpath"/>
+
+        <jar jarfile="${lib.dir}/comfort-tools.jar" basedir="${destination.dir}/comfort-tools">
+            <manifest>
+                <attribute name="Class-Path" value="juniversalchardet.jar"/>
+            </manifest>
+        </jar>
+        <delete dir="${destination.dir}/juniversalchardet"/>
+        <delete dir="${destination.dir}/comfort-tools"/>
+    </target>
+
+    <target name="convert-sources" depends="compile-tools" description="Detect encoding and convert all source to UTF8">
+        <path id="libs">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+        </path>
+        <path id="sources">
+            <pathelement location="${source.dir}"/>
+        </path>
+        <pathconvert refid="sources"/>
+        <pathconvert refid="libs"/>
+        <taskdef name="convert" classname="comfort.tools.ant.SourceConvert" classpathref="libs"/>
+        <convert encoding="utf8" includes="**/*.java **/*.jfx" sourcepathid="sources"/>
+    </target>
+
+</project>

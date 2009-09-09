@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+    <!--
+        MONEY("format.money", "%m"),
+        FIXED("format.fixed", "%.2f"),
+
+        GOODS_NAME("header.goods.name", "Имя"),
+        GOODS_PRICE("header.goods.price", "Цена"),
+        GOODS_QUANT("header.goods.quant", "Кол-во"),
+        GOODS_AMOUNT("header.goods.amount", "Сумма"),
+        GOODS_NAME_WIDTH("goods.name.width", "40"),
+        GOODS_PRICE_WIDTH("goods.price.width", "20"),
+        GOODS_QUANT_WIDTH("goods.price.width", "20"),
+        GOODS_AMOUNT_WIDTH("goods.amount.width", "20");
+    -->
+
+    <entry key="format.money">%m</entry>
+    <entry key="format.fixed">%.2f</entry>
+
+    <entry key="header.goods.name">Имя</entry>
+    <entry key="header.goods.price">Цена</entry>
+    <entry key="header.goods.quant">Кол-во</entry>
+    <entry key="header.goods.amount">Amount</entry>
+    <entry key="goods.name.width">40</entry>
+    <entry key="goods.price.width">20</entry>
+    <entry key="goods.price.width">20</entry>
+    <entry key="goods.amount.width">20</entry>
+
+
+</properties>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition
+  xmlns="urn:jbpm.org:jpdl-3.2"  name="Retail">
+   <start-state name="start">
+      <transition name="" to="BillEditing"></transition>
+   </start-state>
+   <end-state name="end"></end-state>
+   <node name="pay">
+      <transition name="error" to="BillEditing"></transition>
+      <transition name="" to="Pay"></transition>
+   </node>
+   <process-state name="BillEditing">
+      <transition name="logoff" to="end"></transition>
+      <transition name="pay" to="pay"></transition>
+   </process-state>
+   <process-state name="Pay">
+      <transition name="end" to="BillEditing"></transition>
+      <transition name="logoff" to="end"></transition>
+   </process-state>
+</process-definition>

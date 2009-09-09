@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://java.sun.com/xml/ns/javaee"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		http://java.sun.com/xml/ns/javaee/application_5.xsd"
+             version="5">
+    <display-name>Comfort</display-name>
+    <module>
+        <ejb>jboss-seam.jar</ejb>
+    </module>
+    <module>
+        <ejb>persistence-hibernate-ejb.jar</ejb>
+    </module>
+    <module>
+        <ejb>web-beans-ejb.jar</ejb>
+    </module>
+    <module>
+        <web>
+            <web-uri>web-portal</web-uri>
+            <context-root>/web-portal</context-root>
+        </web>
+    </module>
+
+
+</application>

@@ -1,0 +1,90 @@
+<project name="comfort-app.ear" default="install.local">
+    <property file="../build.properties"/>
+    <property name="module.destinaton.dir" value="${destination.dir}/${ant.project.name}"/>
+
+    <target name="web-portal.build">
+        <ant antfile="../web-portal/build.xml" inheritall="false" target="build"/>
+    </target>
+
+    <target name="build.modules">
+        <ant antfile="../exceptions/build.xml" inheritall="false" target="build"/>
+        <ant antfile="../persistence-front/build.xml" inheritall="false" target="build"/>
+        <ant antfile="../persistence-hibernate/build.xml" inheritall="false" target="build.ejb"/>
+        <ant antfile="../web-beans/build.xml" inheritall="false" target="build.ejb"/>
+        <ant antfile="../web-portal/build.xml" inheritall="false" target="build"/>
+    </target>
+
+    <target name="build.application" depends="build.modules">
+        <delete dir="${module.destinaton.dir}" quiet="true"/>
+        <mkdir dir="${module.destinaton.dir}"/>
+        <copy todir="${module.destinaton.dir}">
+            <fileset dir="."
+                     includes="${includes.files}" 
+                     excludes="${ignored.files}"/>
+            <fileset dir="${lib.dir}/seam">
+                <include name="jboss-seam.jar"/>
+            </fileset>
+            <fileset dir="${destination.dir}">
+                <include name="*ejb.jar"/>
+                <include name="web-portal/**"/>
+            </fileset>
+        </copy>
+        <copy todir="${module.destinaton.dir}/APP-INF/lib">
+            <fileset dir="${destination.dir}">
+                <exclude name="*ejb.jar"/>
+                <exclude name="web-portal/**"/>
+                <exclude name="comfort-app.ear/**"/>
+            </fileset>
+            <fileset dir="${lib.dir}/ear-libs" includes="*.jar"/>
+        </copy>
+    </target>
+    <target name="install.local" depends="build.application">
+        <delete dir="${server.deploy.dir}/${ant.project.name}" quiet="true"/>
+        <copy todir="${server.deploy.dir}/${ant.project.name}">
+            <fileset dir="${module.destinaton.dir}"/>
+        </copy>
+        <copy todir="${server.deploy.dir}">
+            <fileset file="${module.destinaton.dir}/comfort-ds.xml"/>
+        </copy>
+        <copy todir="${server.deploy.dir}/../lib">
+            <fileset dir="${lib.dir}/server-libs" includes="*.jar"/>
+        </copy>
+    </target>
+
+    <target name="redeploy.ejb.local" depends="build.application">
+        <copy todir="${server.deploy.dir}/${ant.project.name}">
+            <fileset dir="${module.destinaton.dir}" includes="*.jar" excludes="jboss*"/>
+        </copy>
+    </target>
+
+    <target name="fastredeploy.web-portal.local" depends="web-portal.build">
+        <!--<delete dir="${server.deploy.dir}/${ant.project.name}/web-portal" quiet="true"/>-->
+
+        <property name="server.temp.dir" location="${server.deploy.dir}/../tmp"/>
+        <path id="test">
+            <last count="1">
+                <sort>
+                    <date xmlns="antlib:org.apache.tools.ant.types.resources.comparators"/>
+                    <resources>
+                        <dirset dir="${server.temp.dir}" includes="*/${ant.project.name}"/>
+                    </resources>
+                </sort>
+            </last>
+        </path>
+        <pathconvert pathsep="" refid="test" property="temp.dir"/>
+        <echo message="${temp.dir}"/>
+
+        <copy todir="${module.destinaton.dir}/web-portal">
+            <fileset dir="${module.destinaton.dir}/../web-portal">
+            </fileset>
+        </copy>
+
+        <copy todir="${temp.dir}/web-portal">
+            <fileset dir="${module.destinaton.dir}/web-portal">
+                <exclude name="WEB-INF/**"/>
+            </fileset>
+        </copy>
+
+        <!--<touch file="${server.deploy.dir}/${ant.project.name}/web-portal/WEB-INF/web.xml"/>-->
+    </target>
+</project>

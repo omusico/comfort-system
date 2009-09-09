@@ -1,0 +1,12 @@
+<project name="web-portal" default="build">
+    <property file="../build.properties"/>
+    <property name="module.destinaton.dir" value="${destination.dir}/${ant.project.name}"/>
+    <delete dir="${module.destinaton.dir}"/>
+    <mkdir dir="${module.destinaton.dir}"/>
+    
+    <target name="build">
+        <copy todir="${module.destinaton.dir}">
+          <fileset dir="." excludes="${ignored.files}"/>
+        </copy>
+    </target>
+</project>

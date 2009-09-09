@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="configs" default="configs.copy">
+    <dirname property="module.configs.basedir" file="build.xml"/>
+    <property file="../build.properties"/>
+
+    <property name="configs.output.dir" value="${destination.dir}/configs"/>
+
+    <target name="configs.clean" description="cleanup configs">
+        <delete dir="${configs.output.dir}"/>
+    </target>
+
+    <target name="configs.copy" description="copy configs to output" depends="configs.clean">
+        <copy todir="${configs.output.dir}">
+            <fileset dir="${module.configs.basedir}" excludes="${ignored.files}"/>
+        </copy>
+    </target>
+</project>

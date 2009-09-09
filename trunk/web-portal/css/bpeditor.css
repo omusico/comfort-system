@@ -1,0 +1,24 @@
+.workspace {
+            position: absolute;
+            width: 40em;
+            height: 50em;
+            background-color: yellow;
+
+}
+
+.component {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    font-size: 0.5em;
+}
+
+.node {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    font-size: 0.5em;
+    width: 3em;
+    height:3em;
+    position:absolute;
+}

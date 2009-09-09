@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition
+  xmlns="urn:jbpm.org:jpdl-3.2"  name="Authorization">
+   <end-state name="success"></end-state>
+   <start-state name="start">
+      <transition name="" to="Login"></transition>
+   </start-state>
+   <end-state name="cancel"></end-state>
+   <state name="Login">
+      <transition name="" to="login"></transition>
+   </state>
+   <node name="login">
+      <transition name="" to="success"></transition>
+      <transition name="error" to="cancel"></transition>
+   </node>
+</process-definition>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition
+  xmlns="urn:jbpm.org:jpdl-3.2"  name="Main">
+   <start-state name="start">
+      <transition name="" to="Login"></transition>
+   </start-state>
+   <end-state name="end"></end-state>
+   <process-state name="Login">
+      <transition name="" to="BookMenu"></transition>
+   </process-state>
+   <state name="BookMenu">
+      <transition name="" to="openBook"></transition>
+      <transition name="logoff" to="Login"></transition>
+   </state>
+   <node name="openBook">
+      <transition name="end" to="Confirmation"></transition>
+      <transition name="" to="Login"></transition>
+   </node>
+   <state name="Confirmation">
+      <transition name="no" to="BookMenu"></transition>
+      <transition name="yes" to="exit"></transition>
+   </state>
+   <node name="exit">
+      <transition name="" to="end"></transition>
+   </node>
+</process-definition>

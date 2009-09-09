@@ -1,0 +1,1 @@
+cmt.bpdesign.view = {};
