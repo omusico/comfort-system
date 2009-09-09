@@ -9,7 +9,12 @@
       xmlns:a4j="http://richfaces.org/a4j" xmlns:ui="http://java.sun.com/jsf/facelets">
 <head>
     <title>Моделирование</title>
+
     <style type="text/css">
+        .classControls {
+           float: right;    
+        }
+
         .delete_class {
             background-image: url("img/webpro-full-preview.jpg");
             background-position: -455px -2171px;
@@ -30,45 +35,81 @@
     </style>
 </head>
 <body>
-<h:panelGroup id="header" layout="block">
-    <h:panelGroup layout="block">
-    </h:panelGroup>
-    <h:panelGroup style="float:right;" layout="block">
-        <h:graphicImage url="/img/header_right.gif"/>
-    </h:panelGroup>
-</h:panelGroup>
-
-<h:panelGroup style="clear: both; width:0; height:1px; margin:0; border:0" layout="block">
-</h:panelGroup>
 
 <f:view>
+    <a4j:loadScript src="resource://jquery.js"/>
+    <script type="text/javascript">
+        function showClassControls(element)
+        {
+            jQuery('.classControls', element)
+                    .css("left", jQuery(element).offset().left + 'px')
+                    .css("top", jQuery(element).offset().top + 'px')
+                    .show();
+
+        }
+        function hideClassControls(element)
+        {
+           jQuery('.classControls', element).hide("slow");
+        }
+    </script>
+    <h:panelGroup id="header" layout="block">
+        <h:panelGroup layout="block">
+        </h:panelGroup>
+        <h:panelGroup style="float:right;" layout="block">
+            <h:graphicImage url="/img/header_right.gif"/>
+        </h:panelGroup>
+    </h:panelGroup>
+
+    <h:panelGroup style="clear: both; width:0; height:1px; margin:0; border:0" layout="block">
+    </h:panelGroup>
+</f:view>
+
+
+<f:view>
+
     <r:panel id="content" style="height:100%; overflow:hidden;">
         <r:panel header="Классы" style="width:49%; float:left">
             <a4j:form>
-                <h:inputText id="search" value="#{searchText}"/>
+                <h:inputText id="search" value=""/>
                 <a4j:commandButton action="#{classEditor.search(r:findComponent('search').value)}"
                                    value="Поиск"
                                    reRender="tabs, planeList"/>
-                <ui:remove>
-                <h:inputText id="search" value="#{txt}"/>
-                <a4j:commandButton action="#{koko.doIt}" value="Поиск"/> 
-                </ui:remove>
+
             </a4j:form>
             <a4j:form>
                 <r:tabPanel id="tabs" style="width:80%;" switchType="client" selectedTab="#{presentationTabName}">
                     <r:tab label="Дерево" id="treeTab">
-                        <r:tree id="classTree" switchType="ajax"
+
+                        <r:tree id="classTree"
+                                switchType="ajax"
                                 nodeSelectListener="#{classEditor.selectClass}"
                                 ajaxSubmitSelection="true"
+                                
                                 reRender="properties">
                             <r:recursiveTreeNodesAdaptor
                                     var="c"
                                     roots="#{classEditor.rootClasses}"
-                                    nodes="#{c.children}">
-                                <r:treeNode ajaxSingle="true" >
-                                    <r:inplaceInput id="#{c.id}_input" value="#{c.name}" editEvent="ondblclick">
-                                        <a4j:support action="#{classEditor.endChange(c)}" event="onchange"/>
-                                    </r:inplaceInput>
+                                    nodes="#{c.children}"
+                                    >
+                                <r:treeNode
+                                        id="#{c.id}_class"
+                                        ajaxSingle="true"
+                                        onmouseover="showClassControls(this);"
+                                        onmouseout="hideClassControls(this);">
+
+                                        <r:inplaceInput style="float:left;"
+                                                        value="#{c.name}"
+                                                        editEvent="ondblclick"
+                                                        immediate="true">
+                                            <a4j:support action="#{classEditor.save}"
+                                                         event="onchange"
+                                                         reRender="properties"/>
+                                        </r:inplaceInput>
+                                        <a4j:outputPanel layout="block" style="display:none" styleClass="classControls" onmouseover="showClassControls(this);">
+                                            <h:outputText value="Добавить"/>
+                                        </a4j:outputPanel>
+
+
                                 </r:treeNode>
                             </r:recursiveTreeNodesAdaptor>
                         </r:tree>

@@ -19,7 +19,4 @@ public interface IClassEditor {
     List<IComfortClass> getPlaneList();
     void selectClass(NodeSelectedEvent event);
 
-    String getSearchText();
-
-    void setSearchText(String searchText);
 }

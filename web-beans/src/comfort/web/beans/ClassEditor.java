@@ -3,24 +3,22 @@ package comfort.web.beans;
 import comfort.persistence.front.DAO;
 import comfort.persistence.front.IComfortClass;
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.log.Log;
 import org.jboss.seam.annotations.*;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
-import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.component.html.HtmlTree;
+import org.richfaces.event.NodeSelectedEvent;
 
-import javax.ejb.EJB;
-import javax.ejb.Remove;
-import javax.ejb.Stateful;
-import javax.swing.tree.TreeNode;
 import java.util.List;
 
-@Stateful
 @Name("classEditor")
 @Scope(ScopeType.SESSION)
-public class ClassEditor implements IClassEditor
+public class ClassEditor //implements IClassEditor
 {
-    @EJB
+    @Logger
+    private Log log;
+    @In(create = true)
     private DAO dao;
     private List<IComfortClass> roots;
     @In(required = false)
@@ -28,20 +26,8 @@ public class ClassEditor implements IClassEditor
     private IComfortClass selectedClass;
     private List<IComfortClass> planeList;
     @In(required = false)
-    @Out
+    @Out(required = false)
     private String presentationTabName = "treeTab";
-
-    @In(scope = ScopeType.EVENT)
-    private String searchText;
-
-    public String getSearchText() {
-        return searchText;
-    }
-
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
-    }
-
 
     public List<IComfortClass> getRootClasses()
     {
@@ -51,24 +37,24 @@ public class ClassEditor implements IClassEditor
 
     @Begin
     @End
-    public void endChange(IComfortClass clazz)
+    public void save()
     {
-        System.out.println("BEGIN");
-        dao.save(clazz);
-        System.out.println("END");
+        log.debug("BEGIN");
+        dao.save(selectedClass);
+        log.debug("END");
     }
 
     public void search(String text)
     {
         presentationTabName = "planeListTab";
         planeList = dao.findList("from IComfortClass where name like ?", "%" + text + "%");
-        System.out.println("searchText = " + searchText);
+        System.out.println("planeList.size = " + planeList.size());
     }
 
-    @Remove
-    public void destroy()
-    {
-    }
+//    @Remove
+//    public void destroy()
+//    {
+//    }
 
     public List<IComfortClass> getPlaneList()
     {
