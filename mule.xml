@@ -1,0 +1,41 @@
+<project name="mule">
+    <dirname property="mule.dir" file="${ant.file.mule}"/>
+
+    <property file="${mule.dir}/build.properties"/>
+    <property name="module.destinaton.dir" value="${destination.dir}/${module.name}"/>
+    <path id="module.compile.classpath">
+        <fileset dir="${destination.dir}">
+            <include name="*.jar"/>
+        </fileset>
+
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+    <target name="compile">
+        <delete dir="${module.destinaton.dir}" quiet="true"/>
+        <mkdir dir="${module.destinaton.dir}"/>
+        <copy todir="${module.destinaton.dir}" overwrite="true" failonerror="false">
+            <fileset dir="." includes="${meta.files}, ${compiler.resources}" excludes="${ignored.files}"/>
+
+        </copy>
+        <javac srcdir="${source.dir}"
+               destdir="${module.destinaton.dir}"
+               includes="${includes.files}"
+               excludes="${ignored.files}"
+               classpathref="module.compile.classpath"
+               encoding="UTF-8"
+               debug="${compiler.debug}"
+               debuglevel="${compiler.debuglevel}"/>
+    </target>
+    <target name="build" depends="compile">
+        <!--<delete file="${destination.dir}/${module.name}.jar" quiet="true"/>-->
+        <jar basedir="${module.destinaton.dir}" destfile="${destination.dir}/${module.name}.jar"/>
+        <delete dir="${module.destinaton.dir}" quiet="true"/>
+    </target>
+    <target name="build.ejb" depends="compile">
+        <!--<delete file="${destination.dir}/${module.name}.jar" quiet="true"/>-->
+        <jar basedir="${module.destinaton.dir}" destfile="${destination.dir}/${module.name}-ejb.jar"/>
+        <delete dir="${module.destinaton.dir}" quiet="true"/>
+    </target>
+</project>

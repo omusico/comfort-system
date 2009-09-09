@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition
+  xmlns="urn:jbpm.org:jpdl-3.2"  name="Pay">
+   <start-state name="start">
+      <transition name="" to="Pay"></transition>
+   </start-state>
+   <end-state name="end"></end-state>
+   <node name="store">
+      <transition name="" to="end"></transition>
+   </node>
+   <state name="Pay">
+      <transition name="pay" to="store"></transition>
+      <transition name="logoff" to="logoff"></transition>
+      <transition name="return" to="end"></transition>
+   </state>
+   <end-state name="logoff"></end-state>
+</process-definition>

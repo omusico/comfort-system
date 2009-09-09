@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="module_client-ui" default="compile.module.client-ui">
+    <property file="../build.properties"/>
+    <dirname property="module.client-ui.basedir" file="build.xml"/>
+
+    <property name="module.jdk.home.client-ui" value="${project.jdk.home}"/>
+    <property name="module.jdk.bin.client-ui" value="${project.jdk.bin}"/>
+    <property name="module.jdk.classpath.client-ui" value="${project.jdk.classpath}"/>
+
+    <property name="compiler.args.client-ui" value="${compiler.args}"/>
+
+    <property name="client-ui.output.dir" value="${module.client-ui.basedir}/../bin/production/client-ui"/>
+    <property name="client-ui.testoutput.dir" value="${module.client-ui.basedir}/../bin/test/client-ui"/>
+
+    <path id="client-ui.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="client-ui.module.classpath">
+        <path refid="${module.jdk.classpath.client-ui}"/>
+        <path refid="library.jboss_4.0.4.ga.classpath"/>
+        <pathelement location="${buisness-model-def.output.dir}"/>
+        <pathelement location="${buisness-model-def.testoutput.dir}"/>
+        <pathelement location="${buisness-model-impl.output.dir}"/>
+        <pathelement location="${buisness-model-impl.testoutput.dir}"/>
+        <path refid="library.junit.classpath"/>
+    </path>
+
+    <path id="client-ui.runtime.module.classpath">
+        <path refid="${module.jdk.classpath.client-ui}"/>
+        <path refid="library.jboss_4.0.4.ga.classpath"/>
+        <pathelement location="${buisness-model-def.output.dir}"/>
+        <pathelement location="${buisness-model-def.testoutput.dir}"/>
+        <pathelement location="C:/Program Files/JetBrains/IntelliJ IDEA 7.0.1/lib/junit-4.4.jar"/>
+        <pathelement location="${buisness-model-impl.output.dir}"/>
+        <pathelement location="${buisness-model-impl.testoutput.dir}"/>
+        <path refid="library.junit.classpath"/>
+    </path>
+
+
+    <patternset id="excluded.from.compilation.client-ui">
+        <patternset refid="excluded.from.module.client-ui"/>
+    </patternset>
+
+    <path id="client-ui.module.sourcepath">
+        <dirset dir="${module.client-ui.basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+    <path id="client-ui.module.test.sourcepath">
+        <dirset dir="${module.client-ui.basedir}">
+            <include name="test"/>
+        </dirset>
+    </path>
+
+
+    <target name="client-ui.compile" depends="client-ui.compile.production, client-ui.compile.tests"
+            description="Compile module client-ui"/>
+
+    <target name="client-ui.compile.production"
+            depends="compile.module.buisness-model-def,compile.module.buisness-model-impl"
+            description="Compile module client-ui; production classes">
+        <mkdir dir="${client-ui.output.dir}"/>
+        <javac destdir="${client-ui.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+               memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.client-ui}/javac">
+            <compilerarg line="${compiler.args.client-ui}"/>
+            <bootclasspath refid="client-ui.module.bootclasspath"/>
+            <classpath refid="client-ui.module.classpath"/>
+            <src refid="client-ui.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.client-ui"/>
+        </javac>
+
+        <copy todir="${client-ui.output.dir}">
+            <fileset dir="${module.client-ui.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.client-ui.tests" depends="compile.module.client-ui.production"
+            description="compile module client-ui; test classes" unless="skip.tests">
+        <mkdir dir="${client-ui.testoutput.dir}"/>
+        <javac destdir="${client-ui.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+               memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.client-ui}/javac">
+            <compilerarg line="${compiler.args.client-ui}"/>
+            <classpath refid="client-ui.module.classpath"/>
+            <classpath location="${client-ui.output.dir}"/>
+            <src refid="client-ui.module.test.sourcepath"/>
+            <patternset refid="excluded.from.compilation.client-ui"/>
+        </javac>
+
+        <copy todir="${client-ui.testoutput.dir}">
+            <fileset dir="${module.client-ui.basedir}/test">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean.module.client-ui" description="cleanup module">
+        <delete dir="${client-ui.output.dir}"/>
+        <delete dir="${client-ui.testoutput.dir}"/>
+    </target>
+</project>

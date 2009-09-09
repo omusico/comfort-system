@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition
+  xmlns="urn:jbpm.org:jpdl-3.2"  name="Bill Editing">
+   <start-state name="start">
+      <transition name="" to="BillEditing"></transition>
+   </start-state>
+   <end-state name="logoff">
+   </end-state>
+   <end-state name="pay">
+   </end-state>
+   <state name="BillEditing">
+      <transition name="pay" to="pay"></transition>
+      <transition name="logoff" to="logoff"></transition>
+      <transition name="menu" to="main.Authorization"></transition>
+   </state>
+   <state name="Menu">
+      <transition name="logoff" to="logoff"></transition>
+      <transition name="pay" to="pay"></transition>
+      <transition name="return" to="BillEditing"></transition>
+   </state>
+   <process-state name="main.Authorization">
+      <transition name="" to="Menu"></transition>
+      <transition name="cancel" to="BillEditing"></transition>
+   </process-state>
+</process-definition>

@@ -1,0 +1,4 @@
+<project name="exceptions" default="build">
+    <property name="module.name" value="${ant.project.name}"/>
+    <import file="../mule.xml"/>
+</project>

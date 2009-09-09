@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="xml" encoding="utf-8" />
+
+<xsl:param name="processDefinitionResolver" />
+<xsl:param name="data" />
+<xsl:param name="currentProcessName" />
+<xsl:param name="superProcessName" />
+
+	<xsl:template match="*[local-name() = 'node']">
+		<node>
+			<xsl:copy-of select="@*"/>
+
+			<action class="comfort.bpm.jbpm.NodeAction" />
+
+			<xsl:copy-of select="*[not(local-name() = 'transition')]"/>
+			<transition name="">
+				<xsl:attribute name="to">node-<xsl:value-of select="@name" />-decision</xsl:attribute>			
+			</transition>
+			
+		</node>
+		
+		<decision>
+			<xsl:attribute name="name">node-<xsl:value-of select="@name" />-decision</xsl:attribute>
+			<xsl:apply-templates select="*[local-name() = 'transition']" mode="decision"/>
+		</decision>
+		
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'end-state']">
+		<end-state>
+			<xsl:copy-of select="@*"/>
+
+			<event type="node-enter">
+			   <action name="action" class="comfort.bpm.jbpm.ProcessEndAction" />
+			</event>
+
+			<xsl:copy-of select="*"/>
+			
+		</end-state>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'process-state']">
+		<process-state>
+			<xsl:copy-of select="@*"/>
+      		<variable name="action"/>
+			<xsl:copy-of select="*[not(local-name() = 'transition')]"/>
+			<transition name="">
+				<xsl:attribute name="to">process-<xsl:value-of select="@name" />-decision</xsl:attribute>			
+			</transition>
+			<xsl:if test="not(sub-process)">
+				<sub-process>
+					<xsl:attribute name="name">
+						<xsl:value-of select="@name" />;<xsl:value-of select="$currentProcessName" />;<xsl:value-of select="$processDefinitionResolver" />;<xsl:value-of select="$data" />
+					</xsl:attribute>
+					<xsl:attribute name="binding">late</xsl:attribute>
+				</sub-process>
+			</xsl:if>
+			
+		</process-state>
+		<decision>
+			<xsl:attribute name="name">process-<xsl:value-of select="@name" />-decision</xsl:attribute>
+			<xsl:apply-templates select="*[local-name() = 'transition']" mode="decision"/>
+		</decision>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'transition']" mode="decision">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:copy-of select="*"/>
+			<condition>#{action=="<xsl:value-of select="@name"/>"}</condition>			
+		</xsl:copy>
+	</xsl:template>
+
+    <xsl:template match="*[local-name() = 'start-state']">
+        <start-state>
+            <xsl:attribute name="name"><xsl:value-of select="$superProcessName" />;<xsl:value-of select="$currentProcessName" /></xsl:attribute>
+            <xsl:copy-of select="@*[not(local-name() = 'name')]"/>
+            <xsl:copy-of select="*"/>
+        </start-state>
+    </xsl:template>
+
+    <xsl:template match="*" priority="-1">
+		<xsl:copy-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="/*">
+		<process-definition>
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates />
+		</process-definition>
+	</xsl:template>
+
+</xsl:stylesheet>

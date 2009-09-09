@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE synth SYSTEM "synth.dtd">-->
+
+<synth>
+    <!--Палитра-->
+    <object id="color1" class="java.awt.Color">
+        <int>0</int>
+        <int>255</int>
+        <int>255</int>
+    </object>
+    <object id="color2" class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>255</int>
+    </object>
+    <object id="borderColor" class="Color">
+        <int>255</int>
+        <int>0</int>
+        <int>255</int>
+    </object>
+
+    <object id="evenBackcolor" class="java.awt.Color">
+        <int>215</int>
+        <int>217</int>
+        <int>225</int>
+    </object>
+    <object id="evenForecolor" class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+    </object>
+    <object id="oddBackcolor" class="java.awt.Color">
+        <int>208</int>
+        <int>210</int>
+        <int>221</int>
+    </object>
+    <object id="oddForecolor" class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+    </object>
+    <!-- Инициализация отрисовщиков-->
+    <object id="gradient" class="comfort.client.ui.graphic.GradientPainter">
+        <object idref="color1"/>
+        <object idref="color2"/>
+        <object idref="borderColor"/>
+    </object>
+    <!-- Общий стиль по умолчанию -->
+    <style id="backingStyle">
+        <!-- Make all the regions opaque-->
+        <opaque value="true"/>
+        <font name="Verdana" size="12"/>
+        <state>
+            <!-- Цвета по умолчанию -->
+            <color value="#D8D987" name="BACKGROUND"/>
+            <color value="RED" name="FOREGROUND"/>
+        </state>
+    </style>
+
+    <style id="buttonStyle">
+        <painter method="buttonBackground" idref="gradient"/>
+        <painter method="buttonBorder" idref="gradient"/>
+        <insets top="4" left="4" right="4" bottom="4"/>
+    </style>
+
+    <style id="tableHeaderStyle">
+        <state>
+            <color value="GREEN" type="BACKGROUND"/>
+            <color value="WHITE" type="FOREGROUND"/>
+        </state>
+    </style>
+    <style id="tableBodyStyle">
+        <object class="java.awt.Color" id="color">
+            <int>0</int>
+            <int>255</int>
+            <int>255</int>
+        </object>
+        <property type="idref" key="Table.gridColor" value="color"/>
+        <defaultsProperty type="idref" key="Table.evenRowBackground" value="evenBackcolor"/>
+        <defaultsProperty type="idref" key="Table.evenRowForeground" value="evenForecolor"/>
+        <defaultsProperty type="idref" key="Table.oddRowBackground" value="oddBackcolor"/>
+        <defaultsProperty type="idref" key="Table.oddRowForeground" value="oddForecolor"/>
+
+        <!--<property type="boolean" key="Table."-->
+        <opaque value="false"/>
+        <!--<painter method="tableBackground" idref="gradient"/>            -->
+        <state>
+            <color type="TEXT_BACKGROUND" value="BLACK"/>
+            <color type="TEXT_FOREGROUND" value="WHITE"/>
+        </state>
+    </style>
+    <style id="tab">
+        <color type="BACKGROUND" value="GREEN"/>
+        <state>
+            <color type="BACKGROUND" value="RED"/>
+        </state>
+
+    </style>
+    <bind style="tab" type="region" key="TabbedPaneTab"/>
+    <bind style="tableBodyStyle" type="region" key="Table"/>
+
+    <bind style="tableHeaderStyle" type="region" key="TableHeader"/>
+
+    <!--Пример стиля с отрисовкой из файла картинки-->
+    <!--
+        <style id="imgButtonStyle">
+        <state value="PRESSED">
+        <imagePainter path="button2.png" method="buttonBackGround" sourceInsets="0 0 0 0"/>
+        </state>
+        <state>
+        <imagePainter path="button.png" method="buttonBackGround" sourceInsets="0 0 0 0"/>
+        </state>
+        <state value="FOCUSED">
+        <imagePainter path="button.png" method="buttonBackGround" sourceInsets="0 0 0 0"/>
+        </state>
+
+        <insets top="5" left="5" right="5" bottom="5"/>
+        </style>
+    -->
+    <!-- Привязка стилей к регионам или к именам компонентов-->
+    <bind style="backingStyle" type="REGION" key=".*"/>
+    <bind style="buttonStyle" type="REGION" key="button"/>
+    <!--<bind style="imgButtonStyle" type="region" key="button"/>-->
+</synth>

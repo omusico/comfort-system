@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="Pay" width="880" height="714">
+  <node name="start" x="333" y="68" width="-1" height="-1">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end" x="370" y="458" width="140" height="40"/>
+  <node name="store" x="337" y="318" width="140" height="40">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Pay" x="334" y="177" width="140" height="40">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-235" h1="93" w2="-110" h2="-189"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="204" h1="118" w2="168" h2="-163"/>
+    </edge>
+  </node>
+  <node name="logoff" x="209" y="459" width="-1" height="-1"/>
+</root-container>

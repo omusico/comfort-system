@@ -1,0 +1,1 @@
+$(".editMode").bind("blur", function(element){alert('Привет')});

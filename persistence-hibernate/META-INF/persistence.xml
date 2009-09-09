@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+    <persistence-unit name="comfort_persistence" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>java:/comfort_data_source</jta-data-source>
+        <class>comfort.persistence.hibernate.ComfortNamedEntity</class>
+        <class>comfort.persistence.hibernate.ComfortClass</class>
+        <class>comfort.persistence.hibernate.ComfortInstance</class>
+        <class>comfort.persistence.hibernate.ComfortProperty</class>
+        <class>comfort.persistence.hibernate.ComfortType</class>
+        <class>comfort.persistence.hibernate.ComfortValue</class>
+
+        <properties>
+            <property name="jboss.entity.manager.factory.jndi.name"
+                      value="comfort-app/comfort_persistence"/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+
+            <property name="hibernate.show_sql" value="true"/>
+
+            <!-- Drop and re-create the database schema on startup -->
+            <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
+
+            <property name="hibernate.connection.pool_size" value="1"/>
+
+            <property name="hibernate.connection.charset" value="UTF-8"/>
+
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+
+            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+
+            <property name="hibernate.jdbc.batch_size" value="30"/>
+
+            <property name="hibernate.transaction.manager_lookup_class"
+                      value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+            <property name="hibernate.connection.release_mode" value="auto"/>
+            <property name="hibernate.connection.flush_before_completion" value="true"/>
+            <property name="hibernate.connection.auto_close_session" value="true"/>
+            <!--<property name="hibernate.transaction.factory_class " value="org.hibernate.transaction.JTATransactionFactory"/>-->
+
+        </properties>
+    </persistence-unit>
+
+</persistence>
